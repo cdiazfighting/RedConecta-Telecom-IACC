@@ -1,0 +1,13 @@
+# entorno Virtual 
+./venv/
+
+# archivos temporales
+__pycache__/
+*.pyc
+
+# archivos propios del sistema
+.DS_Store
+Thumbs.db
+
+# configuracion del editor
+.vscode/
