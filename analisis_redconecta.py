@@ -131,3 +131,58 @@ clientes.to_excel(
 )
 
 print("Reporte de Experiencia de Clientes generado")
+
+
+
+
+# ---------------------------------------
+# Pregunta 4 - Funciones reutilizables
+# ---------------------------------------
+
+from funciones.funciones_analisis import (
+    calcular_promedio,
+    detectar_atipicos,
+    guardar_resultados
+)
+
+import os
+
+# Creo carpeta para los resultados
+os.makedirs("resultados", exist_ok=True)
+
+# Calculo promedios usando NumPy
+promedio_latencia = calcular_promedio(df, "latencia_ms")
+
+promedio_resolucion = calcular_promedio(
+    df, "tiempo_resolucion_hr"
+)
+
+print("\n--- Análisis con NumPy ---")
+print("Latencia promedio:", round(promedio_latencia, 2))
+print("Tiempo promedio de resolución:", round(promedio_resolucion, 2))
+
+
+# Buscamos valores atípicos con SciPy
+atipicos = detectar_atipicos(df, "latencia_ms")
+
+print("\n--- Análisis con SciPy ---")
+print("Posibles valores atípicos de latencia:", len(atipicos))
+
+# Guardamos los registros encontrados en Excel
+atipicos.to_excel(
+    "resultados/latencias_atipicas.xlsx",
+    index=False
+)
+
+
+# Guardamos un resumen con Joblib
+resumen = {
+    "latencia_promedio": float(promedio_latencia),
+    "tiempo_resolucion_promedio": float(promedio_resolucion),
+    "cantidad_atipicos": len(atipicos)
+}
+
+guardar_resultados(
+    resumen,
+    "resultados/resumen_redconecta.joblib"
+)
